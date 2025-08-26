@@ -55,7 +55,7 @@ namespace OnlineShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,FullDesc,Price,Discount,ImageName,Qty,Tags,VideoUrl")] Product product, IFormFile? MainImage)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,FullDesc,Price,Discount,ImageName,Qty,Tags,VideoUrl")] Product product, IFormFile? MainImage, IFormFile[]? GalleryImages)
         {
             if (ModelState.IsValid)
             {
@@ -64,15 +64,39 @@ namespace OnlineShop.Areas.Admin.Controllers
                     product.ImageName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(MainImage.FileName);
                     string fn;
                     fn = Directory.GetCurrentDirectory();
-                    string ImagePath = Path.Combine(fn + "\\wwwroot\\images\\banners\\" + product.ImageName);
+                    string ImagePath = fn + "\\wwwroot\\images\\banners\\" + product.ImageName;
 
                     using (var stream = new FileStream(ImagePath, FileMode.Create))
                     {
                         MainImage.CopyTo(stream);
                     }
                 }
+                // ------------------------------------------------------------------
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                // ====================Saving Gallery Images ========================
+                if (GalleryImages != null)
+                {
+                    foreach (var item in GalleryImages)
+                    {
+                        var newGallery = new ProductGallery();
+                        newGallery.ProductId = product.Id;
+                        // -----------------------------------
+                        newGallery.ImageName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(item.FileName);
+                        string fn;
+                        fn = Directory.GetCurrentDirectory();
+                        string ImagePath = fn + "\\wwwroot\\images\\banners\\" + newGallery.ImageName;
+
+                        using (var stream = new FileStream(ImagePath, FileMode.Create))
+                        {
+                            item.CopyTo(stream);
+                        }
+                        // -----------------------------------
+                        _context.ProductGalleries.Add(newGallery);
+                    }
+                }
+                await _context.SaveChangesAsync();
+                // ==================================================================
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
