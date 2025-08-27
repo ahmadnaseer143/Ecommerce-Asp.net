@@ -26,6 +26,26 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View(await _context.Products.ToListAsync());
         }
 
+        public IActionResult DeleteGallery(int id)
+        {
+            var gallery = _context.ProductGalleries.FirstOrDefault(x => x.Id == id);
+            if (gallery == null)
+            {
+                return NotFound();
+            }
+            string d = Directory.GetCurrentDirectory();
+            string fn = d + "\\wwwroot\\images\\banners\\" + gallery.ImageName;
+
+            if (System.IO.File.Exists(fn))
+            {
+                System.IO.File.Delete(fn);
+            }
+            _context.Remove(gallery);
+            _context.SaveChanges();
+
+            return Redirect("edit/" + gallery.ProductId);
+        }
+
         // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
