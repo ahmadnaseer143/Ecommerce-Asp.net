@@ -115,6 +115,9 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            // --------------------------
+            ViewData["gallery"] = _context.ProductGalleries.Where(x => x.ProductId == product.Id).ToList();
+            // --------------------------
             return View(product);
         }
 
