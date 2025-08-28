@@ -245,6 +245,35 @@ namespace OnlineShop.Areas.Admin.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
+                // =================delete images ===================================
+                string d = Directory.GetCurrentDirectory();
+                string fn = d + "\\wwwroot\\images\\banners\\";
+                //----------
+                string mainImagePath = fn + product.ImageName;
+                //--------------------------
+                if (System.IO.File.Exists(mainImagePath))
+                {
+                    System.IO.File.Delete(mainImagePath);
+                }
+                //--------------------------
+                var galleries = _context.ProductGalleries.Where(x => x.ProductId == id).ToList();
+                if (galleries != null)
+                {
+                    //--------------------------
+                    foreach (var item in galleries)
+                    {
+                        string galleryImagePath = fn + item.ImageName;
+                        //--------------------------
+                        if (System.IO.File.Exists(galleryImagePath))
+                        {
+                            System.IO.File.Delete(galleryImagePath);
+                        }
+                        //--------------------------
+                    }
+                    //--------------------------
+                    _context.ProductGalleries.RemoveRange(galleries);
+                }
+                // ==================================================================
                 _context.Products.Remove(product);
             }
 
