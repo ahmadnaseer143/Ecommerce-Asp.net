@@ -22,5 +22,18 @@ namespace OnlineShop.Controllers
             var products = _context.Products.Where(x => EF.Functions.Like(x.Title, "%" + SearchText + "%") || EF.Functions.Like(x.Tags, "%" + SearchText + "%")).OrderBy(x => x.Title).ToList();
             return View("Index",products);
         }
+
+        public IActionResult ProductDetails(int id)
+        {
+            Product? product = _context.Products.FirstOrDefault(x => x.Id == id);
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["gallery"] = _context.ProductGalleries.Where(x => x.ProductId == id).ToList();
+
+            return View(product);
+        }
     }
 }
