@@ -171,12 +171,6 @@
                                 <a data-toggle="tab" href="#tags" role="tab" aria-controls="tags" aria-selected="false">Tags </a>
                             </li>
                             <li>
-                                <a data-toggle="tab" href="#additional" role="tab" aria-controls="additional" aria-selected="false">Additional Information </a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" href="#tabinfo" role="tab" aria-controls="tabinfo" aria-selected="false">Custom Tab Info  </a>
-                            </li>
-                            <li>
                                 <a data-toggle="tab" href="#video" role="tab" aria-controls="video" aria-selected="false">Custom Tab Video </a>
                             </li>
 
@@ -185,15 +179,7 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="info" role="tabpanel">
                             <div class="product_info_content">
-                                <p>Coupling a blended linen construction with tailored style, the River Island HR Jasper Blazer will imprint a touch of dapper charm into your after-dark wardrobe. <br> Our model wearing a size medium blazer, and usually takes a size medium/38L shirt. <br> He is 6’2 1/2” (189cm) tall with a 38” (96 cm) chest and a 31” (78 cm) waist.</p>
-                                <ul>
-                                    <li>Length: 74cm</li>
-                                    <li>Regular fit</li>
-                                    <li>Notched lapels</li>
-                                    <li>Twin button front fastening</li>
-                                    <li>Front patch pockets; chest pocket</li>
-                                    <li> Internal pockets</li>
-                                </ul>
+                                @Html.Raw(Model.FullDesc.Replace("\n", "<br/>"))
                             </div>
                         </div>
                         <div class="tab-pane fade" id="reviews" role="tabpanel">
@@ -259,12 +245,17 @@
                         <div class="tab-pane fade" id="tags" role="tabpanel">
                             <div class="product_info_content">
                                 <ul>
-                                    <li>Length: 74cm</li>
-                                    <li>Regular fit</li>
-                                    <li>Notched lapels</li>
-                                    <li>Twin button front fastening</li>
-                                    <li>Front patch pockets; chest pocket</li>
-                                    <li> Internal pockets</li>
+                                    @if (!string.IsNullOrEmpty(Model.Tags))
+                                    {
+                                        var tags = Model.Tags.Split(",");
+                                            @foreach (var item in tags)
+                                            {
+                                                <li>
+                                                    @item
+                                                </li>
+                                            }
+                                    }
+                                   
                                 </ul>
                             </div>
                         </div>
@@ -320,9 +311,21 @@
                         </div>
                         <div class="tab-pane fade" id="video" role="tabpanel">
                             <div class="product_tab_vidio text-center">
-                                <iframe width="729" height="410" src="https://www.youtube.com/embed/BUWzX78Ye_8" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                                {
+                                    <iframe width="729" height="410"
+                                            src="@Model.VideoUrl"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen>
+                                    </iframe>
+                                }
+                                else
+                                {
+                                    <p>No video available for this product.</p>
+                                }
                             </div>
                         </div>
+
 
                     </div>
                 </div>
