@@ -37,6 +37,8 @@ namespace OnlineShop.Controllers
             ViewData["NewProducts"] =_context.Products.Where(x => x.Id!=id).Take(6).OrderByDescending(x => x.Id).ToList();
             //--------------------------------------------------
 
+            ViewData["comments"] = _context.Comments.Where(x => x.ProductId == id).OrderByDescending(x => x.CreateDate).ToList();
+
             return View(product);
         }
     }

@@ -2,6 +2,7 @@
 @{
     List<OnlineShop.Models.Db.ProductGallery>? gallery = new List<ProductGallery>();
 	List<Product> NewProducts = new List<Product>();
+    List<Comment> comments = new List<Comment>();
     
     if (ViewData["NewProducts"] != null)
     {
@@ -10,6 +11,10 @@
     if (ViewData["gallery"] != null)
     {
         gallery = ViewData["gallery"] as List<ProductGallery>;
+    }
+    if (ViewData["comments"] != null)
+    {
+        comments = ViewData["comments"] as List<Comment>;
     }
 }
 
