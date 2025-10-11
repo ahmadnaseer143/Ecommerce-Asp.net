@@ -217,18 +217,9 @@
                                     <h2>Add a review </h2>
                                     <p>Your email address will not be published.  Required fields are marked </p>
                                 </div>
-                                <div class="product_ratting mb-10">
-                                    <h3>Your rating</h3>
-                                    <ul class="d-flex">
-                                        <li><a href="#"><i class="icon-star"></i></a></li>
-                                        <li><a href="#"><i class="icon-star"></i></a></li>
-                                        <li><a href="#"><i class="icon-star"></i></a></li>
-                                        <li><a href="#"><i class="icon-star"></i></a></li>
-                                        <li><a href="#"><i class="icon-star"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product_review_form">
-                                    <form action="#">
+                                <div class="product_review_form" method="post">
+                                    <form method="post" asp-action="SubmitComment" asp-controller="Products">
+										<input type="hidden" name="productId" value="@Model.Id" />
                                         <div class="row">
                                             <div class="col-12">
                                                 <label for="review_comment">Your review </label>
@@ -236,14 +227,30 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6">
                                                 <label for="author">Name</label>
-                                                <input id="author" type="text">
+                                                <input name="name" id="author" type="text">
 
                                             </div>
                                             <div class="col-lg-6 col-md-6">
                                                 <label for="email">Email </label>
-                                                <input id="email" type="text">
+                                                <input name="email" id="email" type="text">
                                             </div>
                                         </div>
+                                        <!-- Display success message -->
+                                        @if (TempData["SuccessMessage"] != null)
+                                        {
+                                            <div class="alert alert-success" role="alert">
+                                                @TempData["SuccessMessage"]
+                                            </div>
+                                        }
+
+                                        <!-- Display error message -->
+                                        @if (TempData["ErrorMessage"] != null)
+                                        {
+                                            <div class="alert alert-danger" role="alert">
+                                                @TempData["ErrorMessage"]
+                                            </div>
+                                        }
+
                                         <button type="submit">Submit</button>
                                     </form>
                                 </div>

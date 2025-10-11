@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShop.Models.Db;
 
 public partial class Comment
 {
+    [Key]
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;

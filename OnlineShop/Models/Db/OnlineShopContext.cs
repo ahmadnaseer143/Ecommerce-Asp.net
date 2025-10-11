@@ -45,9 +45,8 @@ public partial class OnlineShopContext : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Comment");
+            entity.ToTable("Comment");
+            entity.HasKey(e => e.Id);
 
             entity.Property(e => e.CommentText).HasMaxLength(1000);
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
