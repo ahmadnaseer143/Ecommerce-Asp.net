@@ -88,6 +88,9 @@ public partial class OnlineShopContext : DbContext
         {
             entity.ToTable("User");
 
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasDefaultValue("");
             entity.Property(e => e.FullName).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.RegisterDate).HasColumnType("datetime");

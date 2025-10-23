@@ -16,4 +16,6 @@ public partial class User
     public DateTime? RegisterDate { get; set; }
 
     public int? RecoveryCode { get; set; }
+
+    public string Email { get; set; } = null!;
 }
