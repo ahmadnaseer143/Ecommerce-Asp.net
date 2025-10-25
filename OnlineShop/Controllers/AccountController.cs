@@ -113,5 +113,10 @@ namespace OnlineShop.Controllers
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }
+
+        public IActionResult RecoveryPassword()
+        {
+            return View();
+        }
     }
 }
