@@ -14,7 +14,8 @@ namespace OnlineShop.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var result = GetProductsinCart();
+            return View(result);
         }
         /// <summary>
         /// Add or update the shopping cart
@@ -88,14 +89,13 @@ namespace OnlineShop.Controllers
             return cartList;
         }
 
-
-        public IActionResult SmallCart()
+        public List<ProductCartViewModel> GetProductsinCart()
         {
             var cartItems = GetCartItems();
 
             if (!cartItems.Any())
             {
-                return PartialView(null);
+                return null;
             }
 
             var cartItemProductIds = cartItems.Select(x => x.ProductId).ToList();
@@ -122,9 +122,13 @@ namespace OnlineShop.Controllers
                 result.Add(newItem);
             }
 
+            return result;
+        }
+        public IActionResult SmallCart()
+        {
+            var result = GetProductsinCart();
             return PartialView(result);
         }
-
 
     }
 }
