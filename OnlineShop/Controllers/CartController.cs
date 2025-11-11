@@ -17,6 +17,12 @@ namespace OnlineShop.Controllers
             var result = GetProductsinCart();
             return View(result);
         }
+
+        public IActionResult ClearCart()
+        {
+            Response.Cookies.Delete("Cart");
+            return Redirect("/");
+        }
         /// <summary>
         /// Add or update the shopping cart
         /// </summary>
