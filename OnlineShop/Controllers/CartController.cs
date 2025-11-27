@@ -149,5 +149,42 @@ namespace OnlineShop.Controllers
             return View(order);
         }
 
+        [Authorize]
+        [HttpPost]
+        public IActionResult ApplyCouponCode([FromForm] string couponCode)
+        {
+            var order = new Models.Db.Order();
+
+            var coupon = _context.Coupons.FirstOrDefault(c => c.Code == couponCode);
+
+            if (coupon != null)
+            {
+                order.CouponCode = coupon.Code;
+                order.CouponDiscount = coupon.Discount;
+            }
+            else
+            {
+                ViewData["Products"] = GetProductsinCart();
+                TempData["message"] = "Coupon not exitst";
+                return View("Checkout", order);
+            }
+
+            var shippingSetting = _context.Settings.FirstOrDefault();
+
+            if (shippingSetting != null)
+            {
+                order.Shipping = shippingSetting.Shipping;
+            }
+            else
+            {
+                order.Shipping = 0;
+            }
+
+
+            ViewData["Products"] = GetProductsinCart();
+            return View("Checkout", order);
+        }
+
+
     }
 }
