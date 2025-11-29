@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OnlineShop.Models.Db;
@@ -183,6 +184,90 @@ namespace OnlineShop.Controllers
 
             ViewData["Products"] = GetProductsinCart();
             return View("Checkout", order);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Checkout(Models.Db.Order order)
+        {
+            if (!ModelState.IsValid)
+            {
+
+                ViewData["Products"] = GetProductsinCart();
+
+                return View(order);
+            }
+
+            //-------------------------------------------------------
+
+            //check and find coupon
+            if (!string.IsNullOrEmpty(order.CouponCode))
+            {
+                var coupon = _context.Coupons.FirstOrDefault(c => c.Code == order.CouponCode);
+
+                if (coupon != null)
+                {
+                    order.CouponCode = coupon.Code;
+                    order.CouponDiscount = coupon.Discount;
+                }
+                else
+                {
+                    TempData["message"] = "Coupon not exitst";
+                    ViewData["Products"] = GetProductsinCart();
+
+                    return View(order);
+                }
+            }
+
+            var products = GetProductsinCart();
+
+            var setting = _context.Settings.FirstOrDefault();
+            if (setting != null)
+            {
+                order.Shipping = setting.Shipping;
+            }
+            else
+            {
+                order.Shipping = 0;
+            }
+
+
+            order.CreateDate = DateTime.Now;
+            order.SubTotal = products.Sum(x => x.RowSumPrice);
+            order.Total = (order.SubTotal + order.Shipping ?? 0);
+            order.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (order.CouponDiscount != null)
+            {
+                order.Total -= order.CouponDiscount;
+            }
+
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            //-------------------------------------------------------
+
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+
+            foreach (var item in products)
+            {
+                OrderDetail orderDetailItem = new OrderDetail()
+                {
+                    Count = item.Count,
+                    ProductTitle = item.Title,
+                    ProductPrice = (decimal)item.Price,
+                    OrderId = order.Id,
+                    ProductId = item.Id
+                };
+
+                orderDetails.Add(orderDetailItem);
+            }
+            //-------------------------------------------------------
+            _context.OrderDetails.AddRange(orderDetails);
+            _context.SaveChanges();
+
+            // Redirect to PayPal
+            return Redirect("/Cart/RedirectToPayPal?orderId=" + order.Id);
         }
 
 
