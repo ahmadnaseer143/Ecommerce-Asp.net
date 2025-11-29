@@ -25,6 +25,8 @@ public partial class OnlineShopContext : DbContext
 
     public virtual DbSet<Order> Orders { get; set; }
 
+    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductGallery> ProductGalleries { get; set; }
@@ -54,12 +56,10 @@ public partial class OnlineShopContext : DbContext
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.ToTable("Comment");
-            entity.HasKey(e => e.Id);
 
             entity.Property(e => e.CommentText).HasMaxLength(1000);
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
@@ -102,6 +102,14 @@ public partial class OnlineShopContext : DbContext
             entity.Property(e => e.SubTotal).HasColumnType("money");
             entity.Property(e => e.Total).HasColumnType("money");
             entity.Property(e => e.TransId).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<OrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__OrderDet__3214EC07753262F7");
+
+            entity.Property(e => e.ProductPrice).HasColumnType("money");
+            entity.Property(e => e.ProductTitle).HasMaxLength(200);
         });
 
         modelBuilder.Entity<Product>(entity =>
