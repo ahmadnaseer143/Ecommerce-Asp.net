@@ -20,6 +20,14 @@ namespace OnlineShop.Controllers
             var banners = _context.Banner.ToList();
             ViewData["banners"] = banners;
 
+            // -------------------------- New Products --------------------------
+            var newProducts = _context.Products
+                            .OrderByDescending(x => x.Id)
+                            .Take(8)
+                            .ToList();
+            ViewData["newProducts"] = newProducts;
+            // ------------------------------------------------------------------
+
             return View();
         }
 
