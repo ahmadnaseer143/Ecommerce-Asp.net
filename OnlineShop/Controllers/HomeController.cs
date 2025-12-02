@@ -28,7 +28,8 @@ namespace OnlineShop.Controllers
             ViewData["newProducts"] = newProducts;
             // ------------------------------------------------------------------
             // -------------------------- best selling --------------------------
-            
+            var bestSellingProducts = _context.BestSellingFinals.ToList();
+            ViewData["bestSellingProducts"] = bestSellingProducts;
             // ------------------------------------------------------------------
             return View();
         }
