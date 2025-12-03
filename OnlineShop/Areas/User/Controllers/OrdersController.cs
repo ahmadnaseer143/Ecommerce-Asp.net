@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,9 @@ namespace OnlineShop.Areas.User.Controllers
         // GET: User/Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await _context.Orders.Where(x => x.UserId == userId).OrderByDescending(x => x.Id).ToListAsync();
+            return View(result);
         }
 
         // GET: User/Orders/Details/5
