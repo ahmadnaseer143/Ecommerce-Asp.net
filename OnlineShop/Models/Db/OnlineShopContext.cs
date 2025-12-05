@@ -165,7 +165,18 @@ public partial class OnlineShopContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Settings__3214EC074EC5957C");
 
+            entity.Property(e => e.Address).HasMaxLength(500);
+            entity.Property(e => e.CopyRight).HasMaxLength(100);
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.Facebook).HasMaxLength(100);
+            entity.Property(e => e.GooglePlus).HasMaxLength(100);
+            entity.Property(e => e.Instagram).HasMaxLength(100);
+            entity.Property(e => e.Logo).HasMaxLength(50);
+            entity.Property(e => e.Phone).HasMaxLength(50);
             entity.Property(e => e.Shipping).HasColumnType("money");
+            entity.Property(e => e.Title).HasMaxLength(100);
+            entity.Property(e => e.Twitter).HasMaxLength(100);
+            entity.Property(e => e.Youtube).HasMaxLength(100);
         });
 
         modelBuilder.Entity<User>(entity =>
