@@ -49,6 +49,11 @@ namespace OnlineShop.Controllers
             {
                 return NotFound();
             }
+
+            if (product.Qty<request.Count)
+            {
+                return BadRequest();
+            }
             // Retrieve the list of products in the cart using the dedicated function
             var cartItems = GetCartItems();
 
