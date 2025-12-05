@@ -78,6 +78,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            ViewData["OrderDetails"] = _context.OrderDetails.Where(x => x.OrderId == id).ToList();
             return View(order);
         }
 
@@ -88,6 +89,8 @@ namespace OnlineShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,FirstName,LastName,CompanyName,Country,Address,City,Email,Phone,Comment,CouponCode,CouponDiscount,Shipping,SubTotal,Total,CreateDate,TransId,Status")] Order order)
         {
+            ViewData["OrderDetails"] = _context.OrderDetails.Where(x => x.OrderId == id).ToList();
+
             if (id != order.Id)
             {
                 return NotFound();
