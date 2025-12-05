@@ -147,7 +147,10 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _context.Orders.Remove(order);
             }
-
+            // -------------------Delete order details----------
+            var orderDetails = _context.OrderDetails.Where(x => x.OrderId == id).ToList();
+            _context.OrderDetails.RemoveRange(orderDetails);
+            // -------------------------------------------------
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
