@@ -51,7 +51,7 @@ namespace OnlineShop.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-    [Bind("Id,Shipping,Title,Address,Phone,CopyRight,Instagram,FaceBook,GooglePlus,Youtube,Twitter,Logo")]
+    [Bind("Id,Shipping,Title,Address,Email, Phone,CopyRight,Instagram,Facebook,GooglePlus,Youtube,Twitter,Logo")]
        Setting setting, IFormFile? newLogo)
         {
             if (id != setting.Id)
