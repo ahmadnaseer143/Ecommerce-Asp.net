@@ -2,25 +2,26 @@
     ViewData["Title"] = "Home Page";
     var banners = ViewData["banners"] as List<OnlineShop.Models.Db.Banner>;
     var newProducts = ViewData["newProducts"] as List<OnlineShop.Models.Db.Product>;
-	var bestSellingProducts = ViewData["bestSellingProducts"] as List<OnlineShop.Models.Db.BestSellingFinal>;
+    var bestSellingProducts = ViewData["bestSellingProducts"] as List<OnlineShop.Models.Db.BestSellingFinal>;
 }
+
+
 
 <!--slider area start-->
 <section class="slider_section mb-63">
     <div class="slider_area slick_slider_activation" data-slick='{
-    "slidesToShow": 1,
-    "slidesToScroll": 1,
-    "arrows": true,
-    "dots": true,
-    "autoplay": false,
-    "speed": 300,
-    "infinite": true
-    }'>
-
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": true,
+            "autoplay": false,
+            "speed": 300,
+            "infinite": true
+        }'>
         @if (banners != null)
         {
-            var sliders = banners.Where(x=>x.Position == "Slider").OrderBy(x=>x.Priority).ToList();
-            foreach(var item in sliders)
+            var sliders = banners.Where(x => x.Position == "Slider").OrderBy(x => x.Priority).ToList();
+            foreach (var item in sliders)
             {
                 <div class="single_slider d-flex align-items-center" data-bgimg="/images/banners/@item.ImageName">
                     <div class="container">
@@ -28,7 +29,7 @@
                             <div class="col-lg-6 col-md-7">
                                 <div class="slider_text">
                                     <span>Lookbook</span>
-                                    <h1>@Html.Raw(item.Title.Replace("\n","<br/>"))</h1>
+                                    <h1>@Html.Raw(item.Title.Replace("\n", "<br/>"))</h1>
                                     <p>@Html.Raw(item.SubTitle.Replace("\n", "<br/>"))</p>
                                     <a class="btn btn-primary" href="@item.Link">Explore Now</a>
                                 </div>
@@ -39,6 +40,8 @@
 
             }
         }
+
+
     </div>
 </section>
 <!--slider area end-->
@@ -94,21 +97,21 @@
 <section class="banner_section mb-109">
     <div class="container">
         <div class="section_title mb-60">
-            <h2>featured collectionss</h2>
+            <h2>featured collections</h2>
         </div>
         <div class="banner_container d-flex">
             @if (banners != null)
             {
-
                 var banner_list = banners.Where(x => x.Position == "Banner1").OrderBy(x => x.Priority).ToList();
-                foreach(var item in banner_list)
+                foreach (var item in banner_list)
                 {
                     <figure class="single_banner position-relative mr-30">
                         <img src="/images/banners/@item.ImageName" alt="@item.ImageName">
                         <figcaption class="banner_text position-absolute">
                             <h3>@Html.Raw(item.Title.Replace("\n", "<br/>"))</h3>
                             <p>@Html.Raw(item.SubTitle.Replace("\n", "<br/>"))</p>
-                            @if(!string.IsNullOrEmpty(item.Link)){
+                            @if (!string.IsNullOrEmpty(item.Link))
+                            {
                                 <a class="btn btn-primary" href="@item.Link">Shop Now</a>
                             }
 
@@ -116,6 +119,7 @@
                     </figure>
                 }
             }
+
         </div>
     </div>
 </section>
@@ -213,7 +217,6 @@
         <div class="row">
             @if (banners != null)
             {
-
                 var banner2_list = banners.Where(x => x.Position == "Banner2").OrderBy(x => x.Priority).ToList();
                 foreach (var item in banner2_list)
                 {
@@ -227,12 +230,16 @@
                                 {
                                     <a class="btn btn-primary" href="@item.Link">Shop Now</a>
                                 }
+
                             </div>
 
                         </figure>
                     </div>
                 }
             }
+
+
+
 
         </div>
     </div>
@@ -245,25 +252,27 @@
             <div class="section_title">
                 <h2>new arrivals</h2>
             </div>
+
         </div>
         <div class="product_container row">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="all2" role="tabpanel">
                     <div class="product_slick slick_slider_activation" data-slick='{
-                    "slidesToShow": 4,
-                    "slidesToScroll": 1,
-                    "arrows": true,
-                    "dots": false,
-                    "autoplay": false,
-                    "speed": 300,
-                    "infinite": true,
-                    "responsive":[
-                    {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                    {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                    {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                    ]
-                    }'>
-                        @if(newProducts !=null && newProducts.Any()){
+                            "slidesToShow": 4,
+                            "slidesToScroll": 1,
+                            "arrows": true,
+                            "dots": false,
+                            "autoplay": false,
+                            "speed": 300,
+                            "infinite": true,
+                            "responsive":[
+                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
+                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
+                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                             ]
+                        }'>
+                        @if (newProducts != null && newProducts.Any())
+                        {
                             @foreach (var item in newProducts)
                             {
                                 <div class="single_product">
@@ -283,6 +292,7 @@
                                                 </span>
                                             </div>
                                         }
+
                                     </div>
                                     <div class="product_content grid_content text-center">
 
@@ -294,15 +304,14 @@
                                                     @{
                                                         decimal? discounted_price;
                                                         discounted_price = item.Price.GetValueOrDefault(0) - item.Discount.GetValueOrDefault(0);
-
                                                     }
                                                     $@discounted_price.GetValueOrDefault(0).ToString("F")
                                                 </span>
-                                                <span class="old_price">@item.Price.GetValueOrDefault(0).ToString("F")</span>
+                                                <span class="old_price">$@item.Price.GetValueOrDefault(0).ToString("F")</span>
                                             }
                                             else
                                             {
-                                                <span class="current_price">@item.Price..GetValueOrDefault(0).ToString("F")</span>
+                                                <span class="current_price">$@item.Price.GetValueOrDefault(0).ToString("F")</span>
                                             }
 
                                         </div>
@@ -310,41 +319,14 @@
                                             <a class="btn btn-primary" onclick="updateCart(@item.Id,1)" href="#" data-tippy="Add To Cart" data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-placement="top">Add To Cart</a>
                                         </div>
                                     </div>
-                                    <div class="product_list_content">
-                                        <h4 class="product_name"><a href="product-details.html">@item.Title</a></h4>
-                                        <p><a href="#">shows</a></p>
-                                        <div class="price_box">
-                                            @if (item.Discount != null)
-                                            {
-                                                <span class="current_price">
-                                                    @{
-                                                        decimal? discounted_price;
-                                                        discounted_price = item.Price.GetValueOrDefault(0) - item.Discount.GetValueOrDefault(0);
 
-                                                    }
-                                                    $@discounted_price.GetValueOrDefault(0).ToString("F")
-                                                </span>
-                                                <span class="old_price">@item.Price.GetValueOrDefault(0).ToString("F")</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="current_price">@item.Price..GetValueOrDefault(0).ToString("F")</span>
-                                            }
-                                        </div>
-                                        <div class="product_desc">
-                                            <p>@item.Description</p>
-                                        </div>
-                                        <div class="add_to_cart">
-                                            <a class="btn btn-primary" onclick="updateCart(@item.Id,1)" href="#" data-tippy="Add To Cart" data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-placement="top">Add To Cart</a>
-
-                                        </div>
-                                    </div>
                                 </div>
                             }
                         }
+
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
